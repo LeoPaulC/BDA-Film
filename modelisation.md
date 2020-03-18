@@ -19,12 +19,15 @@ The data list in the subject is made up of :
 ## Data description :
 
 * Film :
+
 titre, réalisteur, producteur, devis, genre, nationalité, date, aides
 
 * Lieu de tournage :
+
 titre, réalisateur, adresse, organisme demandeur, type de tournage, date de début, date de fin, coordonnées géographique
 
 * Salle de cinéma :
+
 région, département, adresse, code postal, commune, nom, propriétaire, programmateur,  nombre d'écran, nombre de fauteuils, nombre de semaines d'activités, nombre annuel de séances, nombre annuel d'entrées, évolution du nombre d'entrée par rapport à l'année précédente,  nombre annuel de films programmés, nombre annuel de films inédits, nombre annuel de films programmmés en semaine 1, part du marché francais, part du marcché européen, part du marché américain, coordonnées géographique 
 
 
