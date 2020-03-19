@@ -37,12 +37,138 @@ titre, réalisateur, adresse, organisme demandeur, type de tournage, date de dé
 
 * Salle de cinéma :
 
-région, département, adresse, code postal, commune, nom, propriétaire, programmateur,  nombre d'écran, nombre de fauteuils, nombre de semaines d'activités, nombre annuel de séances, nombre annuel d'entrées, évolution du nombre d'entrée par rapport à l'année précédente,  nombre annuel de films programmés, nombre annuel de films inédits, nombre annuel de films programmmés en semaine 1, part du marché francais, part du marcché européen, part du marché américain, coordonnées géographique 
+région, département, adresse, code postal, commune, nom, propriétaire, programmateur,  nombre d'écran, nombre de fauteuils, nombre de semaines d'activités, nombre annuel de séances, nombre annuel d'entrées, évolution du nombre d'entrée par rapport à l'année précédente,  nombre annuel de films programmés, nombre annuel de films inédits, nombre annuel de films programmmés en semaine 1, part du marché francais, part du marché européen, part du marché américain, coordonnées géographique 
 
 
 ## DataBase description :
 
-* **Film** ( id_f, titre, realisateur, année, genre, nationnalié )
-* **Tournage_Film** ( id_tf, id_f, producteur, devis, date, aides )
+* **Film** ( id_f, titre, realisateur, année, genre, nationalité )
+* **Production** ( id_p, id_f, producteur, devis, date_debut, date_fin, aides )
 * **Lieu_Tournage** ( id_lt, adresse, géo )
-* **Gestion_Lieu_Tournage**( id_glt, id_tf, id_lt, type_tournage, date_debut, date_fin )
+* **Gestion_Lieu_Tournage**( id_glt, id_p, id_lt, type_tournage, date_debut, date_fin )
+* **Salle**( id_s, region, departement, adresse, postal, commune, nom, géo, proprietaire, programmateur )
+* **Description_Salle**( id_s, nb_écran, nb_fauteuils)
+* **Chiffre_Salle**( id_s, année, nb_entrées, evolution, nb_semaines_activités, nb_films, nb_films_inedit, nb_films_semaine1, part_FR, part_UE, part_US)
+ * **Seance**( id_s, id_f, date, heure)
+ 
+## Dependances Fonctionnelles :
+
+* Film(id_f, titre, réalisateur, année, genre, nationalité) :
+
+(titre, réalisateur, année)  -> (genre, nationalité)
+ 
+* Production (  id_f, id_f, producteur, devis, date_debut, date_fin, aides ) :
+
+le producteur est chargé de gérer la partie finaciere du film
+(id_f) -> (producteur)
+(producteur) -> (devis, aides)
+
+* Lieu_tournage( id_lt, adresse, géo ) :
+
+adresse -> géo
+géo -> adresse
+
+* Gestion_Lieu_Tournage ( id_glt, id_p, id_lt, type_tournage, date_debut, date_fin):
+
+id_p -> id_lt, type_tournage
+id_lt, type_tournage -> date_debut, date_fin
+
+* Salle( id_s, region, departement, adresse, postal, commune, nom, géo, proprietaire, programmateur ) :
+
+postal -> departement, commune
+departement, commune -> postal, region
+adresse, nom -> proprietaire
+propretaire -> programmateur
+
+* Description_Salle ( id_s, nb_écran, nb_fauteuils) :
+
+id_s -> (nb_écran, nb_fauteuils)
+
+* Chiffre_Salle ( id_s, année, nb_entrées, evolution, nb_semaines_activités, nb_films, nb_films_inedit, nb_films_semaine1, part_FR, part_UE, part_US) :
+
+(id_s, année) -> (nb_entrées, nb_semaines_activités, nb_films, nb_films_inédit, nb_films_semaines1, part_FR, part_UE, part_US)
+entrées -> évolution
+
+
+* Seance ( id_s, id_f, date, heure) :
+
+(id_s, id_f) -> (date, heure)
+
+## Definitions :
+
+* Producteur :
+> Il a pour fonctions essentielles de :
+>  - diriger la conception du projet
+>  - en étudier la faisabilité
+>  - concevoir le montage financier, en recherchant des financements auprès de partenaires et des aides
+>  - mettre en œuvre les ressources humaines, financières et techniques nécessaires à la fabrication du film
+> --- [gralon](https://www.gralon.net/articles/art-et-culture/cinema/article-le-producteur---role-et-fonctions-1495.htm)
+
+
+  	
+* Devis :
+> L’établissement du devis de production est la pièce financière maîtresse qui va permettre le démarrage de la production.
+Il détermine combien d’argent sera dépensé pour chaque phase de réalisation d’un film: développement, pré-production, production, post-production.
+(...)
+C’est au directeur de production, en collaboration avec le producteur, d’établir le devis et de gérer les dépenses effectuées lors du tournage et de sa préparation.
+> [dirprodformations](https://dirprodformations.fr/devis-production-cinema/) 
+
+
+
+* programmateur :
+> « La programmation de salles, lorsqu’elle n’est pas assurée directement par les entreprises propriétaires du fonds de commerce, est effectuée par un groupement ou une entente de programmation. À noter que certains groupements ou ententes programment les salles dont ils sont propriétaires. En 2017, les onze groupements et ententes nationaux agréés programment 3 119 écrans, soit 52,7 % de l’ensemble des écrans. » (cf. Bilan 2017, les dossiers du CNC n°338, mai 2018, p. 85).
+ >
+ Lorsque le distributeur se réfère à « la salle » ou à « l’exploitant » il faut comprendre par-là l’exploitant programmateur, même si le terme n’est pas mentionné. Le lieu de projection se substitue aux potentiels intermédiaires décisionnaires. Le programmateur devient « la salle », ou parfois une entité, telle « UGC » ou « Gaumont ».
+[openedition](https://journals.openedition.org/entrelacs/4204) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
