@@ -5,7 +5,7 @@ Permettre à un utilisateur :
 
 1. de réserver une place
 
-2.  se renseigner / consulter 
+2.  se renseigner / consulter :
 	* une liste de festivals
 	* une liste de film (par festival) avec :
 		* description du film
@@ -25,7 +25,7 @@ Permettre à un utilisateur :
 
 ### Descriptions des tables :
 
-#### Tables :
+##### Tables :
 
 * Personne : Id_personne , nom_personne , prenom_personne , date_naissance 
 
