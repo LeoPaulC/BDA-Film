@@ -72,12 +72,15 @@ Id_personne ->  (nom_personne , prenom_personne , date_naissance )
 * **Localisation : Id_localisation , adresse , code_postale , ville , coord_geo ( lat.  / long. ) , pays , departement**
 
 Id_localisation -> adresse , code_postal , ville , coord_geo , pays , departement
+
 coord_geo -> departement , ville , pays , adresse
 
 _Décomposition :
 
 loca_1 ( coord_geo, departement , ville , pays , adresse )
+
 ville -> code_postal ,pays , département
+
 code_postal -> departement, ville, pays
 
 loca_2(coord_geo, id_localisation)
@@ -93,11 +96,13 @@ Nous avons donc une perte de DF.
 * **Place : ( Id_place , Id_festival , Id_personne) , numero_place , nom_place , prenom_place , Prix**
 
 (Id_place , Id_festival , Id_personne) ->  numero_place , nom_place , prenom_place , Prix , categorie
+
 categorie -> prix , numero_place
 
 _Décomposition :
 
 place_1(categorie, prix , numero_place)
+
 categorie -> prix , numero_place
 
 place_2( Id_place , Id_festival , Id_personne , nom_personne_place , prenom_personne_place , categorie)
