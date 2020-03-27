@@ -121,7 +121,7 @@ Id_site_critique -> nom,  lien
 
 (  Id_critique , Id_film , Id_site_critique ) -> note_global , avis_general 
  
-* **Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail**
+* **Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail ,mot_de_passe , num_tel**
 
  ( Id_user , Id_personne , Id_localisation ) ->  adresse_mail , mot_de_passe , num_tel
 
