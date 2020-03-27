@@ -33,7 +33,7 @@ Permettre à un utilisateur :
 
 * Film : Id_film , nom_film , type_film , durée_film , Date_parution 
 
-* Casting : ( Id_casting , Id_film ) , Id_personne , role_dans_le_casting
+* Participant : ( id_participant ), id_film , Id_personne , role
 
 * Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail , mot_de_passe , num_tel
 
@@ -66,9 +66,10 @@ Id_personne ->  (nom_personne , prenom_personne , date_naissance )
 (Id_film ) -> nom_film , type_film , durée_film , Date_parution
 
 
-* **Casting : ( Id_casting , Id_film ) , Id_personne , role_dans_le_casting**
+* **Participant : ( Id_participant ), Id_film , Id_personne , role**
 
-( Id_casting , Id_film , Id_personne ) -> role_dans_le_casting
+id_participant -> id_film, id_personne, role
+(id_personne, id_film, role) -> id_participant 
 
 
 * **Localisation : Id_localisation , adresse , code_postale , ville , coord_geo ( lat.  / long. ) , pays , departement**
@@ -101,7 +102,7 @@ Nous avons donc une perte de DF.
 
 categorie -> prix , numero_place
 
-_Décomposition :
+#### Décomposition :
 
 place_1(categorie, prix , numero_place)
 
