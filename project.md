@@ -78,7 +78,7 @@ Id_localisation -> adresse , code_postal , ville , coord_geo , pays , departemen
 
 coord_geo -> departement , ville , pays , adresse
 
-_Décomposition :
+#### Décomposition :
 
 loca_1 ( coord_geo, departement , ville , pays , adresse )
 
@@ -101,8 +101,6 @@ Nous avons donc une perte de DF.
 (Id_place , Id_festival , Id_personne) ->  numero_place , nom_place , prenom_place , Prix , categorie
 
 categorie -> prix , numero_place
-
-#### Décomposition :
 
 place_1(categorie, prix , numero_place)
 
