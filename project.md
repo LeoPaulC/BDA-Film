@@ -47,6 +47,8 @@ Permettre à un utilisateur :
 
 * Critique : (  Id_critique , Id_film ) , Id_site_critique , note_global , avis_general
 
+* Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation
+
 #### Définitions de Dépendance Fonctionnelles :
 
 * **Personne : Id_personne , nom_personne , prenom_personne , date_naissance**
@@ -124,4 +126,8 @@ Id_site_critique -> nom,  lien
 * **Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail ,mot_de_passe , num_tel**
 
  ( Id_user , Id_personne , Id_localisation ) ->  adresse_mail , mot_de_passe , num_tel
+ 
+* **Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation**
+
+( Id_edition , Id_festival , Année ) -> Date_debut , Date_fin , Id_localisation
 
