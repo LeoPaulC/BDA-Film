@@ -107,6 +107,8 @@ categorie -> prix , numero_place
 
 place_2( Id_place , Id_festival , Id_personne , nom_personne_place , prenom_personne_place , categorie)
 
+( Id_place , Id_festival , Id_personne ) -> nom_personne_place , prenom_personne_place , categorie
+
 Nous avons donc une perte de DF.
 
 
@@ -115,7 +117,7 @@ Nous avons donc une perte de DF.
 Id_site_critique -> nom,  lien
 
 
-* **Critique : (  Id_critique , Id_film ) , Id_site_critique , note_global , avis_general**
+* **Critique : (  Id_critique , Id_film , Id_site_critique ) , note_global , avis_general**
 
 (  Id_critique , Id_film , Id_site_critique ) -> note_global , avis_general 
  
