@@ -41,13 +41,14 @@ Permettre à un utilisateur :
 
 * Festival : ( Id_festival , Id_localisation ) , theme , nombre_place_restante , capacité_max , date_ouverture , date_fermeture , description_lieu( un cinéma etc)
 
+* Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation
+
 * Place : ( Id_place , Id_festival , Id_personne) , numero_place , nom_place , prenom_place , Prix
 
 * Site_Critique : Id_site_critique ,nom,  lien
 
 * Critique : (  Id_critique , Id_film ) , Id_site_critique , note_global , avis_general
 
-* Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation
 
 #### Définitions de Dépendance Fonctionnelles :
 
@@ -78,7 +79,7 @@ Id_localisation -> adresse , code_postal , ville , coord_geo , pays , departemen
 
 coord_geo -> departement , ville , pays , adresse
 
-#### Décomposition :
+* Décomposition : *
 
 loca_1 ( coord_geo, departement , ville , pays , adresse )
 
@@ -101,6 +102,8 @@ Nous avons donc une perte de DF.
 (Id_place , Id_festival , Id_personne) ->  numero_place , nom_place , prenom_place , Prix , categorie
 
 categorie -> prix , numero_place
+
+* Décomposition : *
 
 place_1(categorie, prix , numero_place)
 
