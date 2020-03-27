@@ -35,7 +35,7 @@ Permettre à un utilisateur :
 
 * Casting : ( Id_casting , Id_film ) , Id_personne , role_dans_le_casting
 
-* Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail 
+* Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail , mot_de_passe , num_tel
 
 * Localisation : Id_localisation , adresse , code_postale , ville , coord_geo ( lat.  / long. ) , pays , departement
 
@@ -123,5 +123,5 @@ Id_site_critique -> nom,  lien
  
 * ** Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail**
 
- ( Id_user , Id_personne , Id_localisation ) ->  adresse_mail
+ ( Id_user , Id_personne , Id_localisation ) ->  adresse_mail , mot_de_passe , num_tel
 
