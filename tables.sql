@@ -2,55 +2,64 @@ CREATE TABLE Personne(
 		Id_personne INTEGER PRIMARY KEY,
 		nom_personne VARCHAR(50) NOT NULL,
 		prenom_personne VARCHAR(50) NOT NULL,
-		date_naissance DATE
+		date_naissance DATE CHECK (date_naissance < now()- interval'18 year' ),
 );
 CREATE TABLE Personne_Invitee(
-		Id_personne INTEGER ,
-		Id_film INTEGER ,
-		Id_festival INTEGER ,
-		metier VARCHAR(50) NOT NULL,
+		Id_personne INTEGER,
+		Id_film INTEGER,
+		Id_festival INTEGER,
+		metier VARCHAR(50) CHECK(metier IN ('Acteur','Réalisateur','Producteur','Cameraman')) NOT NULL,
 		PRIMARY KEY(Id_personne, Id_film, Id_festival),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
 		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival)
-
 );
 CREATE TABLE Film(
 		Id_film INTEGER PRIMARY KEY,
-		nom_film VARCHAR(50) NOT NULL,
-		type_film VARCHAR(50),
-		duree_film INTEGER,
-		Date_parution DATE
+		Nom_film VARCHAR(50) NOT NULL,
+		Type_film VARCHAR(50) CHECK( type_film IN ('Documentaire', 'Action','Drame','Animation')) ,
+		Duree_film INTEGER CHECK( duree_film > 0),
+		Date_parution DATE CHECK(Date_parution <= now() )
 );
+CREATE TABLE Film_Edition(
+		Id_edition INTEGER,
+		Id_film INTEGER,
+		PRIMARY KEY(Id_edition, Id_film),
+		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
+		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
+);
+
 CREATE TABLE Participant(
 		Id_participant INTEGER PRIMARY KEY,
 		Id_film INTEGER,
 		Id_personne INTEGER,
-		Role VARCHAR(50) NOT NULL ,
+		Role VARCHAR(50) CHECK(metier IN ('Acteur','Réalisateur','Producteur','Cameraman')) NOT NULL,
+		UNIQUE(Id_film, Id_personne, Role),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne)
 );
 CREATE TABLE Utilisateur(
-		Id_user INTEGER,
+		Id_user INTEGER PRIMARY KEY,
 		Id_personne INTEGER,
 		Id_localisation INTEGER,
 		Email VARCHAR(50) NOT NULL,
 		Mdp VARCHAR(50) NOT NULL,
 		Telephone VARCHAR(50),
-		PRIMARY KEY(Id_user, Id_personne, Id_localisation),
+		UNIQUE(Email,Mdp),
+		UNIQUE(Id_user, Id_personne, Id_localisation),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
 );
 CREATE TABLE Localisation(
-		Id_localisation INTEGER PRIMARY KEY UNIQUE ,
+		Id_localisation INTEGER PRIMARY KEY,
 		Latitude INTEGER,
 		Longitude INTEGER,
 		FOREIGN KEY(Latitude) REFERENCES Lieu(Latitude),
 		FOREIGN KEY(Longitude) REFERENCES Lieu(Longitude)
 );
 CREATE TABLE Lieu(
-		Latitude INTEGER UNIQUE,
-		Longitude INTEGER UNIQUE,
+		Latitude INTEGER,
+		Longitude INTEGER,
 		Departement VARCHAR(50) NOT NULL,
 		Ville VARCHAR(50),
 		Pays VARCHAR(50) NOT NULL,
@@ -61,33 +70,34 @@ CREATE TABLE Lieu(
 CREATE TABLE Festival(
 		Id_festival INTEGER PRIMARY KEY,
 		Theme VARCHAR(50),
-		Nom_festival VARCHAR(50) NOT NULL,
+		Nom_festival VARCHAR(50) NOT NULL UNIQUE,
 		Capacite_max INTEGER,
 		Description_lieu VARCHAR(50),
 		Periodicite VARCHAR(50),
 		Date_creation DATE,
-		Website VARCHAR(50)
+		Website VARCHAR(50) UNIQUE
 );
 CREATE TABLE Edition(
-		Id_edition INTEGER,
-		Id_festival INTEGER UNIQUE,
+		Id_edition INTEGER PRIMARY KEY,
+		Id_festival INTEGER,
 		Annee INTEGER,
 		Date_debut DATE,
 		Date_fin DATE,
 		Id_localisation INTEGER,
-		PRIMARY KEY(Id_edition, Id_festival, Annee),
-		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival)
-		
+		UNIQUE(Id_edition, Id_festival, Annee),
+		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival),
+		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
 );
 CREATE TABLE Place(
-		Id_place INTEGER,
+		Id_place INTEGER PRIMARY KEY,
 		Id_festival INTEGER,
 		Id_personne INTEGER,
 		Nom_place VARCHAR(50) NOT NULL,
 		Prenom_place VARCHAR(50) NOT NULL,
 		Id_categorie INTEGER,
 		Numero_place INTEGER,
-		PRIMARY KEY(Id_place, Id_festival, Id_personne)
+		UNIQUE(Id_place, Id_festival, Id_personne),
+		UNIQUE(Id_festival, Numero_place),
 		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_categorie) REFERENCES Categorie(Id_categorie)
@@ -100,16 +110,15 @@ CREATE TABLE Categorie(
 CREATE TABLE Site_Critique(
 		Id_site INTEGER PRIMARY KEY,
 		Nom VARCHAR(50) NOT NULL,
-		Lien VARCHAR(50) NOT NULL
+		Lien VARCHAR(50) NOT NULL UNIQUE
 );
 CREATE TABLE Critique(
-		Id_critique INTEGER UNIQUE ,
-		Id_film INTEGER UNIQUE ,
+		Id_critique INTEGER PRIMARY KEY,
+		Id_film INTEGER,
 		Id_site INTEGER,
 		Note_global INTEGER,
 		Avis_general VARCHAR(50),
-		PRIMARY KEY(Id_critique, Id_film, Id_site),
+		UNIQUE(Id_critique, Id_film, Id_site),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_site) REFERENCES Site_Critique(Id_site)
-		
+		FOREIGN KEY(Id_site) REFERENCES Site_Critique(Id_site)		
 );
