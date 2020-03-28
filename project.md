@@ -27,31 +27,31 @@ Permettre à un utilisateur :
 
 ##### Tables :
 
-* Personne : Id_personne , nom_personne , prenom_personne , date_naissance 
+* Personne : (Id_personne) , nom_personne , prenom_personne , date_naissance 
 
 * Personnes_Invitées : (Id_personne , Id_film , Id_festival) , metier , date_arrivée , date_depart 
 
-* Film : (  Id_film) , nom_film , type_film , durée_film , Date_parution 
+* Film : (Id_film) , nom_film , type_film , durée_film , Date_parution 
 
-* Participant : ( id_participant ), id_film , Id_personne , role
+* Participant : (Id_participant), Id_film , Id_personne , Rôle
 
-* Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , email , mdp , téléphone
+* Utilisateur ( user lambda ) : (Id_user , Id_personne , Id_localisation) , Email , Mdp , Téléphone
 
-* Localisation : (Id_localisation), coord_geo ( lat.  / long. ) 
+* Localisation : (Id_localisation), Coord_geo ( lat.  / long. ) 
 
-* Lieu : (coord_geo),  departement, ville, pays, adresse, code_postale
+* Lieu : (Coord_geo),  Département, Ville, Pays, Adresse, Code_postale
 
-* Festival : ( Id_festival , Id_edition ) , theme , nom_festival, capacité_max, description_lieu( un cinéma etc), périodicité, date_création, website
+* Festival : (Id_festival , Id_edition) , Thème , Nom_festival, Capacité_max, Description_lieu( un cinéma etc), Périodicité, Date_création, Website
 
-* Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation
+* Edition : (Id_edition , Id_festival , Année) , Date_debut , Date_fin , Id_localisation
 
-* Place : ( Id_place , Id_festival , Id_personne), nom_place , prenom_place , Id_catégorie, Numéro_place 
+* Place : (Id_place , Id_festival , Id_personne), Nom_place , Prenom_place , Id_catégorie, Numéro_place 
 
 * Catégorie: (Id_categorie), Prix, Descriptif
 
-* Site_Critique : (Id_site), nom, lien
+* Site_Critique : (Id_site), Nom, Lien
 
-* Critique : (  Id_critique , Id_film, Id_site ) , Note_global , Avis_general
+* Critique : (Id_critique , Id_film, Id_site) , Note_global , Avis_general
 
 
 #### Définitions de Dépendance Fonctionnelles :
@@ -137,3 +137,46 @@ Id_site_critique -> nom,  lien
 
 ( Id_edition , Id_festival , Année ) -> Date_debut , Date_fin , Id_localisation
 
+### Spécifications des contraintes :
+
+* Personne : (Id_personne) , nom_personne , prenom_personne , date_naissance 
+
+* Personnes_Invitées : (Id_personne , Id_film , Id_festival) , Métier , Date_arrivée , Date_depart 
+$x \subseteq B$
+$Personnes_Invitées[Id_personne] \subseteq Personne[Id_personne]$
+$Personnes_Invitées[Id_film] \subseteq Film[Id_film]$
+$Personnes_Invitées[Id_festival] \subseteq Festival[Id_festival]$
+
+* Film : (Id_film) , nom_film , type_film , durée_film , Date_parution 
+
+* Participant : (Id_participant), Id_film , Id_personne , role
+$Participant[Id_personne] \subseteq Personne[Id_personne]$
+$Particpant[Id_film] \subseteq Film[Id_film]$
+
+* Utilisateur ( user lambda ) : (Id_user , Id_personne , Id_localisation) , Email , Mdp , Téléphone
+$Utilisateur[Id_personne] \subseteq Personne[Id_personne]$
+$Utilisateur[Id_localisation] \subseteq Localisation[Id_localisation]$
+
+* Localisation : (Id_localisation), Coord_geo ( lat.  / long. ) 
+$Localisation[Coord_geo] \subseteq Lieu[Coord_geo]$
+
+* Lieu : (Coord_geo),  Département, Ville, Pays, Adresse, Code_postale
+
+* Festival : (Id_festival , Id_edition) , Thème , Nom_festival, Capacité_max, Description_lieu( un cinéma etc), Périodicité, Date_création, Website
+$Festival[Id_edition] \subseteq Edition[Id_edition]$
+
+* Edition : (Id_edition , Id_festival , Année) , Date_debut , Date_fin , Id_localisation
+$Utilisateur[Id_personne] \subseteq Personne[Id_personne]$
+
+* Place : (Id_place , Id_festival , Id_personne), Nom_place , Prenom_place , Id_categorie, Numero_place 
+$Place[Id_festival] \subseteq Festival[Id_festival]$
+$Place[Id_personne] \subseteq Personne[Id_personne]$
+$Place[Id_categorie] \subseteq Categorie[Id_categorie]$
+
+* Catégorie: (Id_categorie), Prix, Descriptif
+
+* Site_Critique : (Id_site), Nom, Lien
+
+* Critique : (Id_critique , Id_film, Id_site) , Note_global , Avis_general
+$Critique[Id_site] \subseteq Site[Id_site]$
+$Film[Id_film] \subseteq Film[Id_film]$
