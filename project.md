@@ -29,25 +29,29 @@ Permettre à un utilisateur :
 
 * Personne : Id_personne , nom_personne , prenom_personne , date_naissance 
 
-* Personnes_Invitées : (Id_personne , Id_festival , id_film ) , role/metier , date_arrivée , date_depart 
+* Personnes_Invitées : (Id_personne , Id_film , Id_festival) , metier , date_arrivée , date_depart 
 
-* Film : Id_film , nom_film , type_film , durée_film , Date_parution 
+* Film : (  Id_film) , nom_film , type_film , durée_film , Date_parution 
 
 * Participant : ( id_participant ), id_film , Id_personne , role
 
-* Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , adresse_mail , mot_de_passe , num_tel
+* Utilisateur ( user lambda ) : ( Id_user , Id_personne , Id_localisation ) , email , mdp , téléphone
 
-* Localisation : Id_localisation , adresse , code_postale , ville , coord_geo ( lat.  / long. ) , pays , departement
+* Localisation : (Id_localisation), coord_geo ( lat.  / long. ) 
 
-* Festival : ( Id_festival , Id_localisation ) , theme , nombre_place_restante , capacité_max , date_ouverture , date_fermeture , description_lieu( un cinéma etc)
+* Lieu : (coord_geo),  departement, ville, pays, adresse, code_postale
+
+* Festival : ( Id_festival , Id_edition ) , theme , nom_festival, capacité_max, description_lieu( un cinéma etc), périodicité, date_création, website
 
 * Edition : ( Id_edition , Id_festival , Année ) , Date_debut , Date_fin , Id_localisation
 
-* Place : ( Id_place , Id_festival , Id_personne) , numero_place , nom_place , prenom_place , Prix
+* Place : ( Id_place , Id_festival , Id_personne), nom_place , prenom_place , Id_catégorie, Numéro_place 
 
-* Site_Critique : Id_site_critique ,nom,  lien
+* Catégorie: (Id_categorie), Prix, Descriptif
 
-* Critique : (  Id_critique , Id_film ) , Id_site_critique , note_global , avis_general
+* Site_Critique : (Id_site), nom, lien
+
+* Critique : (  Id_critique , Id_film, Id_site ) , Note_global , Avis_general
 
 
 #### Définitions de Dépendance Fonctionnelles :
