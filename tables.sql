@@ -1,16 +1,20 @@
 CREATE TABLE Personne(
 		Id_personne INTEGER PRIMARY KEY,
-		nom_personne,
-		prenom_personne,
+		nom_personne VARCHAR(50) NOT NULL,
+		prenom_personne VARCHAR(50) NOT NULL,
 		date_naissance DATE
 );
 CREATE TABLE Personne_Invitée(
-		Id_personne INTEGER PRIMARY KEY,
-		Id_film INTEGER PRIMARY KEY,
-		Id_festival INTEGER PRIMARY KEY,
+		Id_personne INTEGER ,
+		Id_film INTEGER ,
+		Id_festival INTEGER ,
 		metier VARCHAR(50) NOT NULL,
 		date_arrivee DATE,
-		date_depart DATE
+		date_depart DATE ,
+		PRIMARY KEY(Id_personne , Id_film , Id_festival ) ,
+		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne) ,
+		FOREIGN KEY(Id_film) REFERENCES Film(Id_film) ,
+		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival) ,
 );
 CREATE TABLE Film(
 		Id_film INTEGER PRIMARY KEY,
