@@ -3,6 +3,7 @@ CREATE TABLE Personne(
 		nom_personne VARCHAR(50) NOT NULL,
 		prenom_personne VARCHAR(50) NOT NULL,
 		date_naissance DATE CHECK (date_naissance < now()- interval'18 year' ),
+		UNIQUE(nom_personne,prenom_personne,date_naissance)
 );
 CREATE TABLE Personne_Invitee(
 		Id_personne INTEGER,
@@ -42,12 +43,14 @@ CREATE TABLE Utilisateur(
 		Id_user INTEGER PRIMARY KEY,
 		Id_personne INTEGER,
 		Id_localisation INTEGER,
+		Id_compte INTEGER ,
 		Email VARCHAR(50) NOT NULL,
 		Mdp VARCHAR(50) NOT NULL,
 		Telephone VARCHAR(50),
 		UNIQUE(Email,Mdp),
-		UNIQUE(Id_user, Id_personne, Id_localisation),
+		UNIQUE(Id_user, Id_personne, Id_localisation,Id_compte),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
+		FOREIGN KEY(Id_compte) REFERENCES Compte(Id_compte),
 		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
 );
 CREATE TABLE Compte(
@@ -86,6 +89,7 @@ CREATE TABLE Edition(
 		Id_edition INTEGER PRIMARY KEY,
 		Id_festival INTEGER,
 		Annee INTEGER,
+		Capacite_max_place INTEGER ,
 		Date_debut DATE,
 		Date_fin DATE,
 		Id_localisation INTEGER,
@@ -95,7 +99,6 @@ CREATE TABLE Edition(
 );
 CREATE TABLE Place(
 		Id_place INTEGER PRIMARY KEY,
-		Id_festival INTEGER,
 		Id_personne INTEGER,
 		Nom_place VARCHAR(50) NOT NULL,
 		Prenom_place VARCHAR(50) NOT NULL,
@@ -103,14 +106,16 @@ CREATE TABLE Place(
 		Numero_place INTEGER,
 		UNIQUE(Id_place, Id_festival, Id_personne),
 		UNIQUE(Id_festival, Numero_place),
-		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival),
-		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
+		FOREIGN KEY(Id_user) REFERENCES Utilisateur(Id_user),
 		FOREIGN KEY(Id_categorie) REFERENCES Categorie(Id_categorie)
 );
 CREATE TABLE Categorie(
 		Id_categorie INTEGER PRIMARY KEY,
 		Prix INTEGER,
-		Descriptif VARCHAR(50) 
+		Descriptif VARCHAR(50) ,
+		Id_edition INTEGER ,
+		Capacite_max INTEGER ,
+		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
 );
 CREATE TABLE Site_Critique(
 		Id_site INTEGER PRIMARY KEY,
