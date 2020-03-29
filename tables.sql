@@ -20,7 +20,7 @@ CREATE TABLE Film(
 		Nom_film VARCHAR(50) NOT NULL,
 		Type_film VARCHAR(50) CHECK( type_film IN ('Documentaire', 'Action','Drame','Animation')) ,
 		Duree_film INTEGER CHECK( duree_film > 0),
-		Date_parution DATE CHECK(Date_parution <= now() )
+		Date_parution DATE
 );
 CREATE TABLE Film_Edition(
 		Id_edition INTEGER,
@@ -48,10 +48,10 @@ CREATE TABLE Utilisateur(
 		Mdp VARCHAR(50) NOT NULL,
 		Telephone VARCHAR(50),
 		UNIQUE(Email,Mdp),
-		UNIQUE(Id_user, Id_personne, Id_localisation,Id_compte),
+		UNIQUE(Id_user, Id_personne,Id_compte),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
-		FOREIGN KEY(Id_compte) REFERENCES Compte(Id_compte),
-		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
+		FOREIGN KEY(Id_compte) REFERENCES Compte(Id_compte) ON DELETE CASCADE,
+		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation),
 );
 CREATE TABLE Compte(
 		Id_compte INTEGER PRIMARY KEY,
