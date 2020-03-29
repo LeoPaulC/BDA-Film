@@ -41,14 +41,13 @@ CREATE TABLE Participant(
 );
 CREATE TABLE Utilisateur(
 		Id_user INTEGER PRIMARY KEY,
-		Id_personne INTEGER,
+		Id_personne INTEGER UNIQUE,
 		Id_localisation INTEGER,
-		Id_compte INTEGER ,
+		Id_compte INTEGER UNIQUE,
 		Email VARCHAR(50) NOT NULL,
 		Mdp VARCHAR(50) NOT NULL,
 		Telephone VARCHAR(50),
 		UNIQUE(Email,Mdp),
-		UNIQUE(Id_user, Id_personne,Id_compte),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_compte) REFERENCES Compte(Id_compte) ON DELETE CASCADE,
 		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation),
@@ -69,7 +68,7 @@ CREATE TABLE Lieu(
 		Latitude INTEGER,
 		Longitude INTEGER,
 		Departement VARCHAR(50) NOT NULL,
-		Ville VARCHAR(50),
+		Ville VARCHAR(50) NOT NULL,
 		Pays VARCHAR(50) NOT NULL,
 		Adresse VARCHAR(50),
 		Code_postale VARCHAR(6) NOT NULL,
@@ -99,12 +98,12 @@ CREATE TABLE Edition(
 );
 CREATE TABLE Place(
 		Id_place INTEGER PRIMARY KEY,
-		Id_personne INTEGER,
+		Id_user INTEGER,
 		Nom_place VARCHAR(50) NOT NULL,
 		Prenom_place VARCHAR(50) NOT NULL,
 		Id_categorie INTEGER,
 		Numero_place INTEGER,
-		UNIQUE(Id_place, Id_festival, Id_personne),
+		UNIQUE(Id_festival, Nom_place, Prenom_place),
 		UNIQUE(Id_festival, Numero_place),
 		FOREIGN KEY(Id_user) REFERENCES Utilisateur(Id_user),
 		FOREIGN KEY(Id_categorie) REFERENCES Categorie(Id_categorie)
@@ -112,8 +111,8 @@ CREATE TABLE Place(
 CREATE TABLE Categorie(
 		Id_categorie INTEGER PRIMARY KEY,
 		Prix INTEGER,
-		Descriptif VARCHAR(50) ,
-		Id_edition INTEGER ,
+		Descriptif VARCHAR(50),
+		Id_edition INTEGER,
 		Capacite_max INTEGER ,
 		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
 );
@@ -126,9 +125,9 @@ CREATE TABLE Critique(
 		Id_critique INTEGER PRIMARY KEY,
 		Id_film INTEGER,
 		Id_site INTEGER,
-		Note_global INTEGER CHECK( Note_global BETWEEN 0 AND 10) NOT NULL,
+		Note_globale INTEGER CHECK( Note_globale BETWEEN 0 AND 10) NOT NULL,
 		Avis_general VARCHAR(50),
-		UNIQUE(Id_critique, Id_film, Id_site),
+		UNIQUE(Id_film, Id_site),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
 		FOREIGN KEY(Id_site) REFERENCES Site_Critique(Id_site)		
 );
