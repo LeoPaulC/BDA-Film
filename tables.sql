@@ -50,6 +50,11 @@ CREATE TABLE Utilisateur(
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
 );
+CREATE TABLE Compte(
+		Id_compte INTEGER PRIMARY KEY,
+		Solde NUMERIC(10,2) CHECK( Solde > Decouvert_autorise) NOT NULL,
+		Decouvert_autorise NUMERIC(10,2) NOT NULL DEFAULT 0
+);
 CREATE TABLE Localisation(
 		Id_localisation INTEGER PRIMARY KEY,
 		Latitude INTEGER,
@@ -84,7 +89,7 @@ CREATE TABLE Edition(
 		Date_debut DATE,
 		Date_fin DATE,
 		Id_localisation INTEGER,
-		UNIQUE(Id_edition, Id_festival, Annee),
+		UNIQUE(Id_festival, Annee, Date_debut, Date_fin),
 		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival),
 		FOREIGN KEY(Id_localisation) REFERENCES Localisation(Id_localisation)
 );
@@ -116,7 +121,7 @@ CREATE TABLE Critique(
 		Id_critique INTEGER PRIMARY KEY,
 		Id_film INTEGER,
 		Id_site INTEGER,
-		Note_global INTEGER,
+		Note_global INTEGER CHECK( Note_global BETWEEN 0 AND 10) NOT NULL,
 		Avis_general VARCHAR(50),
 		UNIQUE(Id_critique, Id_film, Id_site),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
