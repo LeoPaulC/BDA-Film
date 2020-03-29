@@ -13,7 +13,7 @@ CREATE TABLE Personne_Invitee(
 		PRIMARY KEY(Id_personne, Id_film, Id_festival),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival)
+		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
 );
 CREATE TABLE Film(
 		Id_film INTEGER PRIMARY KEY,
