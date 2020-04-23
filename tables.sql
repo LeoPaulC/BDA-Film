@@ -73,12 +73,12 @@ CREATE TABLE Lieu(
 CREATE TABLE Personne_Invitee(
 		Id_personne INTEGER,
 		Id_film INTEGER,
-		Id_festival INTEGER,
+		Id_edition INTEGER,
 		metier VARCHAR(50) CHECK(metier IN ('Acteur','Réalisateur','Producteur','Cameraman')) NOT NULL,
 		PRIMARY KEY(Id_personne, Id_film, Id_festival),
 		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival)
+		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
 );
 
 
