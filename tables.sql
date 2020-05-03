@@ -1,27 +1,26 @@
-
-DROP TABLE IF EXISTS Critique;
-DROP TABLE IF EXISTS Place;
-DROP TABLE IF EXISTS Categorie;
-DROP TABLE IF EXISTS Utilisateur;
-DROP TABLE IF EXISTS Participant;
-DROP TABLE IF EXISTS Film_Edition;
-DROP TABLE IF EXISTS Personne_Invitee;
-DROP TABLE IF EXISTS Edition;
-DROP TABLE IF EXISTS Lieu;
-DROP TABLE IF EXISTS Localisation;
-DROP TABLE IF EXISTS Site_Critique;
-DROP TABLE IF EXISTS Festival;
-DROP TABLE IF EXISTS Compte;
-DROP TABLE IF EXISTS Film;
-DROP TABLE IF EXISTS Personne;
+DROP TABLE IF EXISTS Critique CASCADE;
+DROP TABLE IF EXISTS Place CASCADE;
+DROP TABLE IF EXISTS Categorie CASCADE;
+DROP TABLE IF EXISTS Utilisateur CASCADE;
+DROP TABLE IF EXISTS Personne_Invitee CASCADE;
+DROP TABLE IF EXISTS Participant CASCADE;
+DROP TABLE IF EXISTS Film_Edition CASCADE;
+DROP TABLE IF EXISTS Edition CASCADE;
+DROP TABLE IF EXISTS Lieu CASCADE;
+DROP TABLE IF EXISTS Localisation CASCADE;
+DROP TABLE IF EXISTS Site CASCADE;
+DROP TABLE IF EXISTS Festival CASCADE;
+DROP TABLE IF EXISTS Compte CASCADE;
+DROP TABLE IF EXISTS Film CASCADE;
+DROP TABLE IF EXISTS Personne CASCADE;
 
 
 CREATE TABLE Personne(
 		Id_personne SERIAL PRIMARY KEY,
-		Nom_personne VARCHAR(50) NOT NULL,
-		Prenom_personne VARCHAR(50) NOT NULL,
-		Date_naissance DATE CHECK (date_naissance < now()- interval'18 year' ),
-		UNIQUE(nom_personne,prenom_personne,date_naissance)
+		Nom VARCHAR(80) NOT NULL,
+		Prenom VARCHAR(80) NOT NULL,
+		Date_naissance DATE CHECK (date_naissance < now()- interval'18 year' ) NOT NULL,
+		UNIQUE(nom,prenom,date_naissance)
 );
 
 CREATE TABLE Film(
@@ -51,7 +50,7 @@ CREATE TABLE Festival(
 );
 
 
-CREATE TABLE Site_Critique(
+CREATE TABLE Site(
 		Id_site SERIAL PRIMARY KEY,
 		Nom VARCHAR(50) NOT NULL,
 		Lien VARCHAR(50) NOT NULL UNIQUE
@@ -69,9 +68,9 @@ CREATE TABLE Lieu(
 		Ville VARCHAR(50) NOT NULL,
 		Pays VARCHAR(50) NOT NULL,
 		Adresse VARCHAR(100),
-		Code_postale VARCHAR(6) NOT NULL,
+		Code_postal VARCHAR(6) NOT NULL,
 		Id_localisation INTEGER REFERENCES Localisation(Id_localisation),
-		UNIQUE(Adresse, Code_postale, Id_localisation)
+		UNIQUE(Adresse, Code_postal, Id_localisation)
 );
 
 
@@ -79,79 +78,65 @@ CREATE TABLE Edition(
 		Id_edition SERIAL PRIMARY KEY,
 		Date_debut DATE,
 		Date_fin DATE,
-		Id_lieu INTEGER,
-		Id_festival INTEGER,
-		Annee INTEGER,
-		Capacite_max_place INTEGER ,
-		UNIQUE(Id_festival, Annee, Date_debut, Date_fin),
-		FOREIGN KEY(Id_festival) REFERENCES Festival(Id_festival),
-		FOREIGN KEY(Id_lieu) REFERENCES Lieu(Id_lieu)
+		Id_lieu INTEGER REFERENCES Lieu(Id_lieu),
+		Id_festival INTEGER REFERENCES Festival(Id_festival),
+		Capacite_max_place INTEGER,
+		UNIQUE(Id_festival, Date_debut, Date_fin)
 );
 
-CREATE TABLE Personne_Invitee(
-		Id_personne INTEGER,
-		Id_film INTEGER,
-		Id_edition INTEGER,
-		Metier VARCHAR(50) CHECK(metier IN ('Acteur','Réalisateur','Producteur','Cameraman')) NOT NULL,
-		PRIMARY KEY(Id_personne, Id_film, Id_edition),
-		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
-		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
-);
 
 CREATE TABLE Film_Edition(
-		Id_edition INTEGER,
-		Id_film INTEGER,
-		PRIMARY KEY(Id_edition, Id_film),
-		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
+		Id_edition INTEGER REFERENCES Edition(Id_edition) ON DELETE CASCADE,
+		-- si je supprime une edition, on ne peut plus y présenter de film.
+		Id_film INTEGER REFERENCES Film(Id_film) ON DELETE CASCADE,
+		-- si je supprime un film, on ne peut plus le présenter à une édition.
+		PRIMARY KEY(Id_edition, Id_film)
 );
 
 CREATE TABLE Participant(
 		Id_participant SERIAL PRIMARY KEY,
-		Id_film INTEGER,
-		Id_personne INTEGER,
-		Role VARCHAR(50) CHECK(Role IN ('Acteur','Realisateur','Producteur','Cameraman')) NOT NULL,
-		UNIQUE(Id_film, Id_personne, Role),
-		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne)
+		Id_film INTEGER REFERENCES Film(Id_film) ON DELETE CASCADE,
+		Id_personne INTEGER REFERENCES Personne(Id_personne) ON DELETE CASCADE,
+		Role VARCHAR(50) CHECK(Role IN ('Acteur','Realisateur','Producteur','Cameraman','Cascadeur','Scenariste')) NOT NULL,
+		UNIQUE(Id_film, Id_personne, Role)
+);
+
+CREATE TABLE Personne_Invitee(
+		Id_edition INTEGER REFERENCES Edition(Id_edition) ON DELETE CASCADE,
+		Id_participant INTEGER REFERENCES Participant(Id_participant) ON DELETE CASCADE,
+		PRIMARY KEY(Id_participant, Id_edition)
 );
 
 CREATE TABLE Utilisateur(
-		Id_user SERIAL PRIMARY KEY,
+		Id_utilisateur SERIAL PRIMARY KEY,
 		Email VARCHAR(100) NOT NULL,
 		Mdp VARCHAR(50) NOT NULL,
-		Telephone VARCHAR(50),
-		Id_lieu INTEGER NOT NULL,
-		Id_personne INTEGER UNIQUE NOT NULL,
-		Id_compte INTEGER UNIQUE NOT NULL,
-		UNIQUE(Email,Mdp),
-		FOREIGN KEY(Id_personne) REFERENCES Personne(Id_personne),
-		FOREIGN KEY(Id_compte) REFERENCES Compte(Id_compte) ON DELETE CASCADE,
-		FOREIGN KEY(Id_lieu) REFERENCES Lieu(Id_lieu)
+		Telephone VARCHAR(50) DEFAULT NULL,
+		Id_lieu INTEGER DEFAULT NULL REFERENCES Lieu(Id_lieu) ON DELETE SET NULL,
+		Id_personne INTEGER UNIQUE NOT NULL REFERENCES Personne(Id_personne) ON DELETE CASCADE,
+		Id_compte INTEGER UNIQUE NOT NULL REFERENCES Compte(Id_compte) ON DELETE CASCADE,
+		UNIQUE(Email,Mdp)
 );
 
 
 CREATE TABLE Categorie(
 		Id_categorie SERIAL PRIMARY KEY,
-		Prix INTEGER,
-		Descriptif VARCHAR(50),
-		Capacite_max INTEGER ,
-		Id_edition INTEGER,
-		FOREIGN KEY(Id_edition) REFERENCES Edition(Id_edition)
+		Id_edition INTEGER REFERENCES Edition(Id_edition) ON DELETE CASCADE,
+		Descriptif VARCHAR(50) CHECK(Descriptif IN ('VIP','Premium','Classic','Eco')),
+		Capacite INTEGER ,
+		Prix INTEGER CHECK(Prix > 0)
 );
 
 CREATE TABLE Place(
 		Id_place SERIAL PRIMARY KEY,
 		Nom_place VARCHAR(50) NOT NULL,
 		Prenom_place VARCHAR(50) NOT NULL,
-		Id_categorie INTEGER,
-		Numero_place INTEGER,
-		Id_user INTEGER,
+		Id_categorie INTEGER REFERENCES Categorie(Id_categorie) ON DELETE CASCADE,
+		Numero_place INTEGER NOT NULL,
+		Id_utilisateur INTEGER NOT NULL,
 		UNIQUE(Nom_place, Prenom_place),
-		UNIQUE(Numero_place),
-		FOREIGN KEY(Id_user) REFERENCES Utilisateur(Id_user),
-		FOREIGN KEY(Id_categorie) REFERENCES Categorie(Id_categorie)
+		UNIQUE(Numero_place,Id_categorie),
+		FOREIGN KEY(Id_utilisateur) REFERENCES Utilisateur(Id_utilisateur)
 );
 
 CREATE TABLE Critique(
@@ -162,5 +147,5 @@ CREATE TABLE Critique(
 		Id_site INTEGER,
 		UNIQUE(Id_film, Id_site),
 		FOREIGN KEY(Id_film) REFERENCES Film(Id_film),
-		FOREIGN KEY(Id_site) REFERENCES Site_Critique(Id_site)		
+		FOREIGN KEY(Id_site) REFERENCES Site(Id_site)		
 );
