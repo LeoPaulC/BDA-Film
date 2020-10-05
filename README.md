@@ -7,7 +7,7 @@ Projet semi-libre autour du monde du cinéma en France.
 
 ## Liste de donées à traiter:
 	
-The data list in the subject is made up of :
+La liste de données à traiter est composée de :
 
 1.   "gestion de salle de cinéma"
 2.   "gestion de droits à l'image"
