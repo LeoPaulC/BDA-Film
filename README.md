@@ -1,6 +1,7 @@
 # BDA-FILM
 
-Projet semi-libre autour du monde du cinéma en France.
+Le projet a un format semi-libre et s’articule autour de bases de données en libre accès surle cinéma. 
+Ce projet se concentre sur des données en libre accès provenant de bases de données sur le cinéma Français.
 
 
 # Modélisation
