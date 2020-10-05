@@ -1,6 +1,6 @@
 # BDA-FILM
 
-Projet semi-libre autour du mond du cinéma en France.
+Projet semi-libre autour du monde du cinéma en France.
 
 
 # Modélisation
